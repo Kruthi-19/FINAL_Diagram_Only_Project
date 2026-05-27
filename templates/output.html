@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }}</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #eef5fb, #f8fbff);
+            color: #102033;
+        }
+        header {
+            background: linear-gradient(135deg, #082b5f, #0fa3b1);
+            color: white;
+            padding: 28px 20px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 30px;
+        }
+        header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+        }
+        .container {
+            width: 92%;
+            max-width: 1150px;
+            margin: 28px auto;
+        }
+        .top-actions {
+            margin-bottom: 18px;
+        }
+        .back-btn {
+            display: inline-block;
+            background: #0b67c2;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 10px;
+            font-weight: bold;
+        }
+        .dashboard-card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 7px 24px rgba(0,0,0,0.08);
+            border: 1px solid #e3edf8;
+        }
+        .step-badge {
+            display: inline-block;
+            background: #eaf4ff;
+            color: #0b67c2;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+        .output-layout {
+            display: block;
+            gap: 24px;
+            align-items: start;
+        }
+        .image-box {
+            background: #f7fbff;
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid #d8e7f5;
+            text-align: center;
+        }
+        .image-box img {
+            max-width: 100%;
+            max-height: 720px;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1px solid #d7e1ec;
+            background: white;
+        }
+        .info-box {
+            background: #fbfdff;
+            border: 1px solid #e1edf7;
+            border-radius: 16px;
+            padding: 20px;
+            line-height: 1.7;
+        }
+        .info-box h2 {
+            margin-top: 0;
+            color: #0b2c66;
+        }
+        .note {
+            background: #fff7df;
+            border-left: 5px solid #f3b400;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 14px;
+        }
+        @media (max-width: 850px) {
+            .output-layout { grid-template-columns: 1fr; }
+            header h1 { font-size: 24px; }
+        }
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>{{ title }}</h1>
+    <p>{{ subtitle }}</p>
+</header>
+
+<div class="container">
+    <div class="top-actions">
+        <a class="back-btn" href="/">← Back to Main Dashboard</a>
+    </div>
+
+    <div class="dashboard-card">
+        {% if step %}
+            <span class="step-badge">Step {{ step }}</span>
+        {% endif %}
+
+        <div class="output-layout">
+            <div class="image-box">
+                {% if image %}
+                    <img src="/{{ image }}">
+                {% else %}
+                    <p>No output image available.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

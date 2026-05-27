@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Venue Layout Optimizer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #eef5fb, #f8fbff);
+            color: #102033;
+        }
+
+        header {
+            background: linear-gradient(135deg, #082b5f, #0fa3b1);
+            color: white;
+            padding: 34px 20px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.18);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 32px;
+            letter-spacing: 0.3px;
+        }
+
+        header p {
+            margin: 8px 0 0;
+            font-size: 16px;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1180px;
+            margin: 28px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 18px;
+            box-shadow: 0 7px 24px rgba(0,0,0,0.08);
+            margin-bottom: 26px;
+            border: 1px solid #e4edf6;
+        }
+
+        .input-card {
+            max-width: 880px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border-radius: 10px;
+            border: 1px solid #ccd6e0;
+            font-size: 15px;
+        }
+
+        button {
+            background: linear-gradient(135deg, #0b67c2, #064c94);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            margin-top: 20px;
+            padding: 13px 28px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 15px;
+            box-shadow: 0 4px 12px rgba(11,103,194,0.28);
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+        }
+
+        .final-card {
+            background: linear-gradient(135deg, #ffffff, #eff8ff);
+            border-left: 7px solid #0b8f3a;
+        }
+
+        .score {
+            font-size: 52px;
+            color: #0b8f3a;
+            font-weight: bold;
+            margin: 8px 0;
+        }
+
+        .badge {
+            background: #eaf4ff;
+            color: #0b67c2;
+            padding: 8px 13px;
+            border-radius: 22px;
+            display: inline-block;
+            margin: 5px 4px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 7px 24px rgba(0,0,0,0.08);
+            margin-bottom: 34px;
+            overflow: hidden;
+            border: 1px solid #e3edf8;
+        }
+
+        .section-header {
+            padding: 18px 24px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .step-no {
+            background: rgba(255,255,255,0.22);
+            border: 2px solid rgba(255,255,255,0.5);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .section-header h2 {
+            margin: 0;
+            font-size: 23px;
+        }
+
+        .section-header p {
+            margin: 4px 0 0;
+            font-size: 14px;
+            opacity: 0.94;
+        }
+
+        .blue { background: linear-gradient(135deg, #0b67c2, #023e7d); }
+        .green { background: linear-gradient(135deg, #0b8f3a, #006b4f); }
+        .orange { background: linear-gradient(135deg, #c66a00, #f39c12); }
+        .red { background: linear-gradient(135deg, #b51f2d, #e74c3c); }
+        .purple { background: linear-gradient(135deg, #5f27cd, #8e44ad); }
+        .teal { background: linear-gradient(135deg, #006d77, #0fa3b1); }
+
+        .section-body {
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 24px;
+            align-items: start;
+        }
+
+        .image-panel {
+            background: #f7fbff;
+            padding: 14px;
+            border-radius: 16px;
+            border: 1px solid #d8e7f5;
+            text-align: center;
+        }
+
+        .result-img {
+            max-width: 100%;
+            max-height: 520px;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1px solid #d7e1ec;
+            background: white;
+        }
+
+        .explain-panel {
+            background: #fbfdff;
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px solid #e1edf7;
+        }
+
+        .explain-panel h3 {
+            margin-top: 0;
+            color: #0b2c66;
+        }
+
+        .explain-panel ul {
+            padding-left: 20px;
+            line-height: 1.65;
+        }
+
+        .mini-note {
+            background: #fff7df;
+            border-left: 5px solid #f3b400;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 14px;
+            line-height: 1.5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 14px;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        th, td {
+            border: 1px solid #d6dee8;
+            padding: 10px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        th {
+            background: #eaf4ff;
+            color: #0b2c66;
+        }
+
+        tr:nth-child(even) {
+            background: #f8fbff;
+        }
+
+        .table-card {
+            padding: 24px;
+        }
+
+        .highlight {
+            color: #0b67c2;
+            font-weight: bold;
+        }
+
+        @media (max-width: 850px) {
+            .section-body {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 24px;
+            }
+        }
+    
+        .open-output-btn {
+            display: inline-block;
+            margin-top: 14px;
+            background: linear-gradient(135deg, #0b67c2, #064c94);
+            color: white;
+            text-decoration: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(11,103,194,0.22);
+        }
+
+        .open-output-btn:hover {
+            transform: translateY(-1px);
+        }
+
+    </style>
+</head>
+
+<body>
+<header>
+    <h1>AI-Driven Spatial Layout Assessment and Safety Optimization</h1>
+    <p>For Temporary Event Venues</p>
+</header>
+
+<div class="container">
+
+    <div class="card input-card">
+        <h2>Upload Venue Details</h2>
+        <form method="POST" enctype="multipart/form-data">
+            <label>Upload Empty Hall Image / Floor Plan</label>
+            <input type="file" name="venue_image" accept="image/*" required>
+
+            <label>Number of Stalls</label>
+            <input type="number" name="stalls" value="8" min="1" max="20">
+
+            <label>Expected Crowd</label>
+            <input type="number" name="crowd" value="300" min="50" max="5000">
+
+            <label>Stage Size</label>
+            <select name="stage_size">
+                <option>Small</option>
+                <option selected>Medium</option>
+                <option>Large</option>
+            </select>
+
+            <label>Exit Positions</label>
+            <input type="text" name="exit_positions" value="Left and Right">
+
+            <button type="submit">Analyze and Optimize Layout</button>
+        </form>
+    </div>
+
+    {% if error %}
+    <div class="card"><b>Error:</b> {{ error }}</div>
+    {% endif %}
+
+    {% if result %}
+    <div class="card final-card">
+        <h2>Final Output Summary</h2>
+        <div class="score">{{ result.final_score }}/100</div>
+        <p><b>Best Layout Selected:</b> {{ result.best_layout.name }}</p>
+        <p>This score is generated by comparing circulation, accessibility, safety, congestion, and layout fitness.</p>
+
+        <span class="badge">YOLO-ready Detection</span>
+        <span class="badge">Spatial Mapping</span>
+        <span class="badge">KDE Heatmap</span>
+        <span class="badge">A* Multiple Paths</span>
+        <span class="badge">SLP + GA-ACO</span>
+    </div>
+
+    <!-- 1. Object Detection -->
+    <div class="section">
+        <div class="section-header blue">
+            <div class="step-no">1</div>
+            <div>
+                <h2>Detected Venue Objects</h2>
+                <p>Computer Vision / YOLO-ready detection output</p>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="image-panel">
+                <img class="result-img" src="/{{ result.detected_img }}">
+            </div>
+            </div>
+    </div>
+
+    <!-- 2. Spatial Mapping -->
+    <div class="section">
+        <div class="section-header green">
+            <div class="step-no">2</div>
+            <div>
+                <h2>Spatial Mapping</h2>
+                <p>Detected objects are converted into grid coordinates</p>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="image-panel">
+                <img class="result-img" src="/{{ result.spatial_img }}">
+            </div>
+            </div>
+    </div>
+
+    <!-- 3. KDE -->
+    <div class="section">
+        <div class="section-header orange">
+            <div class="step-no">3</div>
+            <div>
+                <h2>KDE Crowd Risk Heatmap</h2>
+                <p>Crowd density and congestion risk visualization</p>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="image-panel">
+                <img class="result-img" src="/{{ result.heatmap_img }}">
+            </div>
+            </div>
+    </div>
+
+    <!-- 4. A* -->
+    <div class="section">
+        <div class="section-header red">
+            <div class="step-no">4</div>
+            <div>
+                <h2>A* Path Planning</h2>
+                <p>Multiple paths are compared and the safest path is selected</p>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="image-panel">
+                <img class="result-img" src="/{{ result.path_img }}">
+            </div>
+            </div>
+    </div>
+
+    <div class="card table-card">
+        <h2>A* Path Comparison</h2>
+        <table>
+            <tr>
+                <th>Path</th>
+                <th>Exit Goal</th>
+                <th>Risk Weight</th>
+                <th>Length</th>
+                <th>Total Cost</th>
+            </tr>
+            {% for p in result.path_options %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ p.goal }}</td>
+                <td>{{ p.risk_weight }}</td>
+                <td>{{ p.length }}</td>
+                <td>{{ p.cost }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <p><b>Selected Best Path Cost:</b> <span class="highlight">{{ result.best_path.cost }}</span></p>
+    </div>
+
+    <!-- 5. Different Layouts -->
+    <div class="section">
+        <div class="section-header purple">
+            <div class="step-no">5</div>
+            <div>
+                <h2>Different Layouts Generated</h2>
+                <p>SLP + GA-ACO style candidate layout generation</p>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="image-panel">
+                <img class="result-img" src="/{{ result.candidates_img }}">
+            </div>
+            </div>
+    </div>
+
+    <div class="card table-card">
+        <h2>Layout Comparison</h2>
+        <table>
+            <tr>
+                <th>Layout</th>
+                <th>Fitness</th>
+                <th>Circulation</th>
+                <th>Accessibility</th>
+                <th>Safety</th>
+                <th>Congestion</th>
+            </tr>
+            {% for l in result.layouts %}
+            <tr>
+                <td>{{ l.name }}</td>
+                <td>{{ l.fitness }}</td>
+                <td>{{ l.circulation }}</td>
+                <td>{{ l.accessibility }}</td>
+                <td>{{ l.safety }}</td>
+                <td>{{ l.congestion }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+    <!-- 6. Final Optimized Output -->
+    <div class="section">
+        <div class="section-header teal">
+            <div class="step-no">6</div>
+            <div>
+                <h2>Optimized Final Layout</h2>
+                <p>Final safe and optimized venue arrangement</p>
+            </div>
+        </div>
+        <div class="section-body">
+            <div class="image-panel">
+                <img class="result-img" src="/{{ result.optimized_img }}">
+            </div>
+            </div>
+    </div>
+    {% endif %}
+</div>
+</body>
+</html>
+
+<style>
+.image-panel{
+    width:100% !important;
+}
+.result-img{
+    width:100% !important;
+    height:auto !important;
+}
+</style>
