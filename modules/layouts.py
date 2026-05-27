@@ -12,12 +12,7 @@ def create_stalls(pattern, n, rows, cols):
 
     cur = 0
 
-    # seating zone starts lower in venue
     start_y = int(rows * 0.62)
-
-    # =====================================================
-    # LEFT RIGHT ROWS
-    # =====================================================
 
     if pattern == "left_right_rows":
 
@@ -43,9 +38,6 @@ def create_stalls(pattern, n, rows, cols):
 
                 cur += 1
 
-    # =====================================================
-    # CENTER SPLIT
-    # =====================================================
 
     elif pattern == "center_split":
 
@@ -71,9 +63,7 @@ def create_stalls(pattern, n, rows, cols):
 
                 cur += 1
 
-    # =====================================================
-    # SIDE ONLY
-    # =====================================================
+  
 
     elif pattern == "side_only":
 
@@ -88,9 +78,6 @@ def create_stalls(pattern, n, rows, cols):
                 x
             ))
 
-    # =====================================================
-    # U SHAPE
-    # =====================================================
 
     elif pattern == "u_shape":
 
@@ -117,9 +104,7 @@ def create_stalls(pattern, n, rows, cols):
                     int(cols * .75)
                 ))
 
-    # =====================================================
-    # RANDOM DISTRIBUTED
-    # =====================================================
+
 
     else:
 
