@@ -1,19 +1,15 @@
-# Virtual Environment
+
 venv/
 
-# Python cache
 __pycache__/
 *.pyc
 
-# VS Code settings
 .vscode/
 
-# Uploaded images
 static/uploads/
 
-# Generated outputs
 static/results/
 
-# OS files
+
 .DS_Store
 Thumbs.db
