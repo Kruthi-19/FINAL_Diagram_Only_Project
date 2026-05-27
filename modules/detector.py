@@ -16,9 +16,6 @@ def detect_venue_objects(image_path, event_data):
 
     detections = []
 
-    # =========================================================
-    # STAGE DETECTION
-    # =========================================================
 
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -60,7 +57,7 @@ def detect_venue_objects(image_path, event_data):
 
                 stage_found = True
 
-    # Use detected stage
+   
     if stage_found:
 
         detections.append({
@@ -68,7 +65,7 @@ def detect_venue_objects(image_path, event_data):
             "bbox": best_stage
         })
 
-    # Fallback stage
+   
     else:
 
         detections.append({
@@ -81,9 +78,7 @@ def detect_venue_objects(image_path, event_data):
             ]
         })
 
-    # =========================================================
-    # ENTRY
-    # =========================================================
+  
 
     detections.append({
         "label": "entry",
@@ -95,9 +90,7 @@ def detect_venue_objects(image_path, event_data):
         ]
     })
 
-    # =========================================================
-    # EXITS
-    # =========================================================
+
 
     detections.append({
         "label": "exit",
@@ -119,17 +112,7 @@ def detect_venue_objects(image_path, event_data):
         ]
     })
 
-    # =========================================================
-    # NO PILLARS
-    # =========================================================
-
-    # Removed completely
-
-    # =========================================================
-    # NO HELPDESK
-    # =========================================================
-
-    # Removed completely
+  
 
     return detections, draw_detections(image_path, detections)
 
